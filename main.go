@@ -32,7 +32,10 @@ func main() {
     r := gin.Default() // Inisialisasi Gin
     r.Use(CORSMiddleware()) // Pasang middleware CORS
     r.POST("/api/search", controllers.SearchRecipe) // Endpoint pencarian resep
-
+    // Tambahkan endpoint GET / untuk healthcheck Railway
+    r.GET("/", func(c *gin.Context) {
+        c.JSON(200, gin.H{"status": "ok"})
+    })
     port := os.Getenv("PORT")
     if port == "" {
         port = "8081"
