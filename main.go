@@ -4,9 +4,12 @@
 package main
 
 import (
-    "github.com/gin-gonic/gin" // Framework web Gin
-    "main/controllers"         // Import controller pencarian resep
-    "net/http"                 // Untuk kebutuhan HTTP
+	"fmt"              // Untuk format string
+	"main/controllers" // Import controller pencarian resep
+	"net/http"         // Untuk kebutuhan HTTP
+	"os"               // Untuk membaca environment variable
+
+	"github.com/gin-gonic/gin" // Framework web Gin
 )
 
 func CORSMiddleware() gin.HandlerFunc {
@@ -29,5 +32,11 @@ func main() {
     r := gin.Default() // Inisialisasi Gin
     r.Use(CORSMiddleware()) // Pasang middleware CORS
     r.POST("/api/search", controllers.SearchRecipe) // Endpoint pencarian resep
-    r.Run(":8081") // Jalankan server di port 8081
+
+    port := os.Getenv("PORT")
+    if port == "" {
+        port = "8081"
+    }
+    addr := fmt.Sprintf(":%s", port)
+    r.Run(addr) // Jalankan server di port yang sesuai
 }
