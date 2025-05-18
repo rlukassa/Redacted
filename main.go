@@ -37,9 +37,10 @@ func main() {
         c.JSON(200, gin.H{"status": "ok"})
     })
     port := os.Getenv("PORT")
-    if port == "" {
-        port = "8081"
-    }
+    if port == "" { port = "8081" }
     addr := fmt.Sprintf(":%s", port)
-    r.Run(addr) // Jalankan server di port yang sesuai
+    fmt.Println("Server running on", addr)
+    if err := r.Run(addr); err != nil {
+        fmt.Println("Gagal menjalankan server:", err)
+    }
 }
